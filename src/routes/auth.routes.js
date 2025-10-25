@@ -7,6 +7,7 @@ const router = Router();
 router.post('/login', async (req, res) => {
     try {
         const { usuario, clave } = req.body;
+        console.log(usuario,clave);
         if (!usuario || !clave) return res.status(400).json({ message: 'usuario y clave requeridos' });
 
         const pool = await getPool();
@@ -14,7 +15,6 @@ router.post('/login', async (req, res) => {
             .input('usuario', sql.VarChar(50), usuario)
             .input('clave_plain', sql.VarChar(200), clave)
             .execute('sp_LoginUsuario');
-
         if (result.recordset.length === 0) {
             return res.status(401).json({ message: 'Credenciales inválidas' });
         }
